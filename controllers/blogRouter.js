@@ -33,8 +33,9 @@ blogRouter.put("/:id", async (request, response, next) => {
     response.status(201).json(blog);
   }
 });
-
+//TODO
 blogRouter.post("/", checkId_currentUser, async (request, response, next) => {
+  const id = await response.locals.user._id;
   const { url, title, author } = request.body;
   const obj = {
     url: url ?? "no link provided",
