@@ -16,13 +16,14 @@ const config = require("../utils/config");
 //     ref: "User",
 //   },
 //   likes: Number,
-blogRouter.get("/", checkAuth, async (request, response, next) => {
+blogRouter.get("/", async (request, response, next) => {
   const result = await Blog.find({})
     .populate("user", {
       username: 1,
     })
     .catch((e) => next(e));
   response.status(200).json(result);
+  next();
 });
 blogRouter.put("/:id", async (request, response, next) => {
   const blog = await Blog.findById(request.params.id).catch((e) => next(e));

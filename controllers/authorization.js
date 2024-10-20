@@ -47,7 +47,6 @@ const checkAuth = async (request, response, next) => {
     response.status(404).json({ error: "please login first!" });
   }
 };
-
 const checkId_currentUser = async (request, response, next) => {
   logger.info("-> checking_current_user....");
   const token = request.cookies.jwt;
@@ -59,6 +58,9 @@ const checkId_currentUser = async (request, response, next) => {
         let user = await User.findById(decodeToken.id);
         //logger.info(user);
         logger.info("-> checking_current_user : scucess!");
+        // pass data to next request
+        // @username
+        // @_id
         response.locals.user = user;
         next();
       }

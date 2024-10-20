@@ -21,8 +21,12 @@ mongoose
   .catch((e) => {
     logger.error("error connecting to mongdb", e.message);
   });
-
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credential: true,
+  }),
+);
 app.use(cookieparser());
 app.use(express.json());
 app.use(morgan("tiny"));
@@ -34,5 +38,4 @@ app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
 app.use(middleware.autoHandleError);
 app.use(middleware.unknownEndpoint);
-
 module.exports = app;

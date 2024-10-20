@@ -18,16 +18,26 @@ loginRouter.post("/", checkUserPassword, async (request, response, next) => {
   const user = await User.findOne({ username });
   const token = createToken(user._id, username.username);
   logger.info("-> login success!");
-  response.cookie("jwt", token, { httpOnly: true, age: tokenAge * 1000 });
-  response.status(200).send({ status: "login success!" });
+  response.cookie("jwt", token, {
+    httpOnly: true, // If you want the cookie accessible in JavaScript
+    secure: false, // Set to true if you're using HTTPS
+    sameSite: "None", // Adjust this based on your use case ('Strict', 'Lax', or 'None')
+    age: tokenAge * 1000,
+  });
+  response.status(200).send({
+    status: "login success!",
+    userid: user._id,
+    username: user.username,
+  });
 });
 
 logoutRouter.post("/", checkId_currentUser, async (request, response, next) => {
   const id = response.locals.user?._id;
+  const username = response.locals.user?.username;
   if (id == undefined) {
     response.status(200).send({ status: "no current user login!" });
   } else {
-    logger.info(`-> name:  id: ${id} logout done!`);
+    logger.info(`-> name: ${username}  id: ${id} -> logout done!`);
     response.cookie("jwt", "", { age: 1 });
     response.status(200).send({ status: "logout success!" });
     //response.redirect("/");
