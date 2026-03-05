@@ -1,7 +1,7 @@
 const loginRouter = require("express").Router();
 const logoutRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const config = require("../utils/config");
 const { checkUserPassword, checkId_currentUser } = require("./authorization");
